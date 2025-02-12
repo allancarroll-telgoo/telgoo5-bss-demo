@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getAuthToken } from '@/lib/telgoo5Api';
 
 export async function GET() {
-  const isTestMode = process.env.NODE_ENV !== 'production';
+  const isTestMode = process.env.IS_TEST_MODE !== 'false';
   if (isTestMode) {
     // Return hard-coded plans in test mode
     return NextResponse.json([

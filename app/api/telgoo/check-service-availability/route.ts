@@ -4,7 +4,7 @@ import { getAuthToken } from '@/lib/telgoo5Api';
 export async function POST(request: Request) {
   try {
     const { zip } = await request.json();
-    const isTestMode = process.env.NODE_ENV !== 'production';
+    const isTestMode = process.env.IS_TEST_MODE !== 'false';
 
     if (!zip) {
       return NextResponse.json({ error: 'Zip code is required' }, { status: 400 });

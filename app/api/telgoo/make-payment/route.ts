@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       zip_code: customer_details?.address?.postal_code || ''
     }
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.IS_TEST_MODE !== 'false') {
       // Simulate response in test mode
       return NextResponse.json({
         customerData,

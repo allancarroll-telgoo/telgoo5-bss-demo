@@ -58,7 +58,7 @@ export async function POST(request: Request) {
 
     let createUserData;
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.IS_TEST_MODE !== 'false') {
       // Simulate response in test mode with customer info
       createUserData = {
         data: [
