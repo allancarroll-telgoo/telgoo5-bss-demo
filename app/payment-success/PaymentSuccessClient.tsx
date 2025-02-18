@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Check } from "lucide-react";
-import { useSubscription } from "@/context/SubscriptionContext";
+import { useApp } from "@/context/AppContext";
 
 export default function PaymentSuccessClient() {
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ export default function PaymentSuccessClient() {
 
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { state, dispatch } = useSubscription();
+  const { state, dispatch } = useApp();
 
   const session_id = searchParams.get("session_id");
   const enrollment_id = state.enrollment_id || searchParams.get("enrollment_id");

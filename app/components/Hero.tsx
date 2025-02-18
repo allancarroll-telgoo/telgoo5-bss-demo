@@ -2,27 +2,27 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSubscription } from "@/context/SubscriptionContext";
+import { useApp } from "@/context/AppContext";
 import { checkServiceAvailability } from "@/lib/telgoo5Api";
 import Image from "next/image";
 
 export default function Hero() {
-  const [zip, setZip] = useState("");
+  const [zip_code, setZipCode] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-  const { dispatch } = useSubscription();
+  const { dispatch } = useApp();
 
   const handleZipSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    if (!zip.match(/^\d{5}$/)) {
+    if (!zip_code.match(/^\d{5}$/)) {
       setError("Please enter a valid 5-digit ZIP code");
       return;
     }
 
     try {
-      const { available, enrollment_id } = await checkServiceAvailability({ zip });
+      const { available, enrollment_id } = await checkServiceAvailability({ zip_code: zip_code });
 
       if (!available) {
         setError("Service is not available in your area");
@@ -34,7 +34,7 @@ export default function Hero() {
         type: 'SET_ENROLLMENT',
         payload: {
           enrollment_id: enrollment_id || `ENROLL_${Date.now()}`,
-          zip
+          zip_code: zip_code
         }
       });
 
@@ -62,8 +62,8 @@ export default function Hero() {
           <div className="flex gap-4">
             <input
               type="text"
-              value={zip}
-              onChange={(e) => setZip(e.target.value)}
+              value={zip_code}
+              onChange={(e) => setZipCode(e.target.value)}
               placeholder="Enter ZIP code"
               className="flex-1 px-4 py-3 rounded-lg bg-brand-navy border border-brand-cyan/20 text-white placeholder-gray-400 focus:outline-none focus:border-brand-cyan"
             />

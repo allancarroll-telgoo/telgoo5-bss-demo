@@ -3,18 +3,18 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
-import { useSubscription } from "@/context/SubscriptionContext";
+import { useApp } from "@/context/AppContext";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function MakePaymentPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { state } = useSubscription();
+  const { state } = useApp();
 
   // Redirect if missing required data
   useEffect(() => {
-    if (!state.enrollment_id || !state.zip || !state.selectedPlan) {
+    if (!state.enrollment_id || !state.zip_code || !state.selectedPlan) {
       router.replace('/');
       return;
     }
@@ -34,7 +34,7 @@ export default function MakePaymentPage() {
           body: JSON.stringify({
             plan: state.selectedPlan!.name,
             price: state.selectedPlan!.price,
-            zip: state.zip,
+            zip_code: state.zip_code,
             enrollment_id: state.enrollment_id,
           }),
         });

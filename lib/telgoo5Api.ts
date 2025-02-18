@@ -23,6 +23,22 @@ interface InitiateBillingParams {
   plan: string;
 }
 
+export interface Plan {
+  plan_id: string;
+  plan_name: string;
+  plan_price: string;
+  data: string;
+  minute_unlimited: string;
+  text_unlimited: string;
+  data_unlimited: string;
+  display_features_description: string[];
+  talk: string;
+  text: string;
+  total_plan_price: string;
+  // ... other fields as needed
+}
+
+
 // Add token caching and authentication function
 let authTokenCache: { token: string; expiresAt: number } | null = null;
 
@@ -41,7 +57,6 @@ export async function getAuthToken(): Promise<string> {
     throw new Error("Failed to get auth token");
   }
   const data = await response.json();
-  console.log('Auth Data:', data);
 
   authTokenCache = { token: data.token, expiresAt: Date.now() + 1000 * 60 * 15 };
   return authTokenCache.token;
@@ -76,11 +91,11 @@ export async function initiateBilling({ userId, plan }: InitiateBillingParams): 
 }
 
 // Updated return type for checkServiceAvailability
-export async function checkServiceAvailability({ zip }: { zip: string }): Promise<{ available: boolean; message?: string; enrollment_id?: string }> {
+export async function checkServiceAvailability({ zip_code }: { zip_code: string }): Promise<{ available: boolean; message?: string; enrollment_id?: string }> {
   const response = await fetch('/api/telgoo/check-service-availability', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ zip }),
+    body: JSON.stringify({ zip_code }),
   });
   if (!response.ok) {
     throw new Error('Service availability check failed');
@@ -89,11 +104,12 @@ export async function checkServiceAvailability({ zip }: { zip: string }): Promis
 }
 
 // Add function to get the plan list - step 2 of the subscription flow
-export async function getPlanList(): Promise<Array<{ name: string; price: number; data: string; features: string[] }>> {
+export async function getPlanList({ zip_code }: { zip_code: string }): Promise<Plan[]> {
   // Use the backend proxy endpoint to get plans
   const response = await fetch('/api/telgoo/plan-list', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ zip_code }),
   });
   if (!response.ok) {
     throw new Error('Failed to fetch plans from backend proxy');

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
-import { SubscriptionProvider } from "@/context/SubscriptionContext";
 import { Analytics } from "@vercel/analytics/react"
+import { Providers } from './providers';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen bg-brand-navy text-white`}>
-        <SubscriptionProvider>
+        <Providers>
           <Header />
           <main>
             {children}
           </main>
-        </SubscriptionProvider>
+        </Providers>
         <Analytics />
       </body>
     </html>
