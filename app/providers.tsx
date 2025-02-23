@@ -1,11 +1,14 @@
 'use client';
 
 import { AppProvider } from './context/AppContext';
+import { PortingProvider } from './context/PortingContext';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <AppProvider>
-      {children}
+      <PortingProvider>
+        {children}
+      </PortingProvider>
     </AppProvider>
   );
 }

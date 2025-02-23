@@ -3,21 +3,13 @@
 
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
-interface User {
-  id: string;
-  name: string;
-  token: string;
-}
-
 interface SelectedPlan {
+  id: string;
   name: string;
   price: number;
 }
 
 interface AppState {
-  // Session data
-  user: User | null;
-
   // Subscription data
   enrollment_id: string | null;
   selectedPlan: SelectedPlan | null;
@@ -29,19 +21,25 @@ interface AppState {
   city: string | null;
   state: string | null;
   zip_code: string | null;
+  customer_id: string | null;
 }
 
 type AppAction =
-  | { type: 'SET_USER'; payload: User | null }
   | { type: 'SET_ENROLLMENT'; payload: { enrollment_id: string; zip_code: string } }
   | { type: 'SELECT_PLAN'; payload: SelectedPlan }
-  | { type: 'SET_USER_INFO'; payload: { first_name: string; last_name: string; email: string; address_one?: string; address_two?: string; city?: string; state?: string; zip_code?: string } }
+  | { type: 'SET_USER_INFO'; payload: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      address_one?: string;
+      address_two?: string;
+      city?: string;
+      state?: string;
+      zip_code?: string;
+      customer_id?: string } }
   | { type: 'RESET' };
 
 const initialState: AppState = {
-  // Session initial state
-  user: null,
-
   // Subscription initial state
   enrollment_id: null,
   selectedPlan: null,
@@ -53,15 +51,11 @@ const initialState: AppState = {
   city: null,
   state: null,
   zip_code: null,
+  customer_id: null,
 };
 
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
-    case 'SET_USER':
-      return {
-        ...state,
-        user: action.payload,
-      };
     case 'SET_ENROLLMENT':
       return {
         ...state,
@@ -83,7 +77,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
         address_two: action.payload.address_two || state.address_two,
         city: action.payload.city || state.city,
         state: action.payload.state || state.state,
-        zip_code: action.payload.zip_code || state.zip_code
+        zip_code: action.payload.zip_code || state.zip_code,
+        customer_id: action.payload.customer_id || state.customer_id,
       };
     case 'RESET':
       return initialState;
@@ -107,11 +102,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (stored) {
         try {
           const parsedState = JSON.parse(stored);
-
-          // Restore user data if exists
-          if (parsedState.user) {
-            dispatch({ type: 'SET_USER', payload: parsedState.user });
-          }
 
           // Restore enrollment data if exists
           if (parsedState.enrollment_id && parsedState.zip_code) {
@@ -144,7 +134,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
                 address_two: parsedState.address_two,
                 city: parsedState.city,
                 state: parsedState.state,
-                zip_code: parsedState.zip_code
+                zip_code: parsedState.zip_code,
+                customer_id: parsedState.customer_id
               }
             });
           }

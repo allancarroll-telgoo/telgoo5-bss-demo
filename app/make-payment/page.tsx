@@ -32,7 +32,8 @@ export default function MakePaymentPage() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            plan: state.selectedPlan!.name,
+            plan_id: state.selectedPlan!.id,
+            plan_name: state.selectedPlan!.name,
             price: state.selectedPlan!.price,
             zip_code: state.zip_code,
             enrollment_id: state.enrollment_id,

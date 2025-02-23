@@ -1,18 +1,39 @@
 "use client";
 
-import React from 'react';
-import { Check } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useApp } from '../context/AppContext';
+import PortingStatusCard from '../components/PortingStatusCard';
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { state } = useApp();
+
+  // Redirect to home if not authenticated
+  useEffect(() => {
+    if (!state.customer_id) {
+      // router.push('/');
+      console.log('No customer id');
+      console.log(state);
+    }
+  }, [state.customer_id, router]);
+
+  if (!state.customer_id) return null;
+
   return (
-    <div className="min-h-screen bg-brand-navy-light flex items-center justify-center p-4">
-      <div className="text-center max-w-md">
-        <div className="bg-brand-cyan/20 rounded-full p-4 w-16 h-16 mx-auto mb-4">
-          <Check className="w-8 h-8 text-brand-cyan" />
+    <>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="space-y-6">
+          <div className="bg-brand-navy rounded-lg shadow-lg p-6">
+            <h2 className="text-lg font-medium text-white mb-4">Welcome back, {state.first_name}!</h2>
+            {/* Add more dashboard content here */}
+          </div>
+
+          {/* Porting Status Card */}
+          <PortingStatusCard />
         </div>
-        <h1 className="text-2xl font-bold mb-2 text-white">Success!</h1>
-        <p className="text-gray-300 mb-4">Your transaction was successful. Thank you for your payment.</p>
-      </div>
-    </div>
+      </main>
+    </>
   );
 }

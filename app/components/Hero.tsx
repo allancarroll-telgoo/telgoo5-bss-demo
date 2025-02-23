@@ -46,9 +46,42 @@ export default function Hero() {
     }
   };
 
+  const handleSignIn = () => {
+    // Set user info with customer_id for demo purposes
+    dispatch({
+      type: 'SET_USER_INFO',
+      payload: {
+        customer_id: 'demo_user_123',
+        first_name: 'Demo',
+        last_name: 'User',
+        email: 'demo@example.com'
+      }
+    });
+
+    dispatch({
+      type: 'SET_ENROLLMENT',
+      payload: {
+        enrollment_id: 'WN56',
+        zip_code: '94131'
+      }
+    });
+
+    router.push('/dashboard');
+  };
+
   return (
     <div className="relative flex items-center">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+        {/* Sign In Button */}
+        <div className="absolute top-4 right-4">
+          <button
+            onClick={handleSignIn}
+            className="px-6 py-2 bg-brand-cyan text-brand-navy rounded-lg hover:bg-brand-cyan-dark transition-colors"
+          >
+            Sign In
+          </button>
+        </div>
+
         <div className="mb-8">
           <Image src="/logo.png" alt="Allan Wireless Logo" width={360} height={120} className="mx-auto" />
         </div>

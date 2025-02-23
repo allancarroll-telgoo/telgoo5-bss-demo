@@ -44,13 +44,14 @@ export default function PlanListPage() {
     dispatch({
       type: 'SELECT_PLAN',
       payload: {
+        id: planId,
         name: selectedPlan.plan_name,
         price: Number(selectedPlan.plan_price)
       }
     });
 
-    // Navigate to payment without query params
-    router.push('/make-payment');
+    // Navigate to port-in-number page instead of payment
+    router.push('/port-in-number');
   };
 
   if (loading) {

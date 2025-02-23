@@ -7,14 +7,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: Request) {
   try {
-    const { plan, price, zip, enrollment_id } = await request.json();
+    const { plan_id, plan_name, price, zip_code, enrollment_id } = await request.json();
 
-    console.log('Creating checkout session with:', { plan, price, zip, enrollment_id });
+    console.log('Creating checkout session with:', { plan_id, plan_name, price, zip_code, enrollment_id });
 
     // First create a product for the plan if it doesn't exist
     const product = await stripe.products.create({
-      name: plan,
-      description: `${plan} Mobile Plan`,
+      name: plan_name,
+      description: `${plan_name} Mobile Plan`,
     });
 
     // Create a price for the product
@@ -38,7 +38,8 @@ export async function POST(request: Request) {
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/plan-list?enrollment_id=${enrollment_id}`,
       metadata: {
         enrollment_id,
-        plan,
+        plan_id,
+        zip_code,
       },
       billing_address_collection: 'required',
     });

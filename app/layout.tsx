@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header";
 import { Analytics } from "@vercel/analytics/react"
 import { Providers } from './providers';
 
@@ -15,16 +14,13 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen bg-brand-navy text-white`}>
         <Providers>
-          <Header />
-          <main>
-            {children}
-          </main>
+          {children}
         </Providers>
         <Analytics />
       </body>

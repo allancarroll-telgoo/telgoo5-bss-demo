@@ -58,10 +58,10 @@ The flow follows these steps and uses these API endpoints:
 
 1. Check service availability: /check_service_availability
 2. Get plan list, show the plan list to the user and let them select a plan: /plan_list
-3. Use stripe integration to initiate billing: /make_payment with stripe hosted checkout
-4. Validate portin: /validate_portin
-5. Create prepaid postpaid customer: /create_prepaid_postpaid_customer_v2
-6. Show user home page
+3. Show the next page asking the user whether to port in a number or not: /port_in_number. If they select to port in a number, ask for the number, carrier, account number, and PIN and kick off the port-in process.
+4. Use stripe integration to initiate billing: /make_payment with stripe hosted checkout
+5. Create user the user after the payment is successful on the payment-success page
+6. Show user home page with the ability to change plan, cancel plan, add a line, and manage account on the dashboard
 
 ## Conclusion
 
